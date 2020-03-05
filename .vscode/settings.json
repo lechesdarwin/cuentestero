@@ -2,5 +2,5 @@
     "python.linting.pylintEnabled": false,
     "python.linting.flake8Enabled": true,
     "python.linting.enabled": true,
-    "python.pythonPath": "/home/darwabo/anaconda3/bin/python"
+    "python.pythonPath": "/home/darwabo/venv/scraper/bin/python"
 }
