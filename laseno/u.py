@@ -10,8 +10,9 @@ import random
 import requests
 
 
+
 def down_img(link, carp):
-    regex = r"([\w-]+\.(?:jpg|jpeg|svg|jpx|png|gif|webp|webp|cr2|x-canon-cr2|tif|tiff|bmp|jxr|vnd.ms-photo|psd|vnd.adobe.photoshop|ico|x-icon|heic))"
+    regex = r"([\w-]+\.(?:jpg|jpeg|svg|png|gif|webp|webp))"
     m = re.search(regex, link)
     name = ""
     if m:
@@ -26,7 +27,7 @@ def down_img(link, carp):
 
 def rrss(test_str):
     regex = r"(@(\w+))"
-    subst = "<a href=\"https://twitter.com/\\2\" target=\"_blank\">\\1</a>"
+    subst = "<a rel='nofolow norefer' href=\"https://twitter.com/\\2\" target=\"_blank\">\\1</a>"
     result = re.sub(regex, subst, test_str, 0, re.IGNORECASE | re.UNICODE)
     if result:
         test_str = result
