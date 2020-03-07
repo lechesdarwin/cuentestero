@@ -37,7 +37,7 @@ def index():
         name = m.group(1)
         print(im)
         img_url.append("img/{}".format(name))
-        save_image(im)
+        #save_image(im)
     data["img"] = img_url
     res = json.dumps(data, ensure_ascii=False).encode('utf8')
     return res.decode()

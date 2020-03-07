@@ -1,0 +1,2 @@
+sudo apt install python3-uvloop
+sudo apt install python3-ujson
