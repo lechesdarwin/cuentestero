@@ -7,7 +7,6 @@ from sanic.response import json
 import httpx
 
 # load pages downloader
-from laseno.pages import down_e as tmp
 from laseno.down import down_e
 
 app = Sanic(__name__)
@@ -32,14 +31,14 @@ async def down_img(link):
 @app.post("/")
 async def post_dump(request:Request):
     url_raspar = request.load_json()["url"]
-    print("Tratando con ->", url)
+    print("Tratando con ->", url_raspar)
     use = request.load_json()["use"]
     print("Utilizando el controlador", use)
     print("Init .:·.:·.:·.:·.·.:·.:")
     if use == "eju":
-        da = await down_e(url)
+        da = await down_e(url_raspar)
     elif use == "eldeberdetodos":
-        da = await down_eldeber_de_todos(url)
+        da = await down_eldeber_de_todos(url_raspar)
 
     img = da["img"]
     img_link = []

@@ -26,7 +26,7 @@ h = {"Connection":"keep-alive"}
 #URLS = URLS[20:]
 # Retrieve a single page and report the URL and contents
 def download(url:str):
-    resp = requests.post("http://127.0.0.1:8888/",json={"url":url},headers=h)
+    resp = requests.post("http://127.0.0.1:8888/",json={"url":url,"use":"eju"},headers=h)
     if resp.status_code == 200:
         print(url," Ok")
         data.append(resp)
