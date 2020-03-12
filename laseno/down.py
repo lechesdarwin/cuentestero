@@ -19,9 +19,11 @@ def id_tuit_text_plain(text,lis):
 
 
 async def down_e(url,pined=False):
-    h = {"User-Agent": "Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.116 Mobile Safari/537.36"}
+    h = {"User-Agent": "Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.122 Mobile Safari/537.36"}
     r = await httpx.get(url,headers=h)
     bs = BeautifulSoup(r.content.decode("utf8"), "html.parser")
+    for script in bs(["script", "style"]):
+        script.extract() 
     content = bs.find("main",{"class":"content"})
     title = content.find("h1", {"class":"entry-title", "itemprop":"headline"}).get_text()
     tuit = content.find_all("a",{"href":re.compile(r"https:\/\/t\.co\/(\w+)")})
@@ -51,12 +53,33 @@ async def down_e(url,pined=False):
                 external_link.append(i.attrs["src"])
         except Exception:
             print("Error into exernals links")
-            
-    for i in content.find_all("p"):
-        if len(i.text) > 6 and i.em == None :
-            contento.append(i.text)
+    fb = ""
+
+    for p in bs.find_all("p"):
+        if p.attrs.get("class") == "entry-meta":
+            continue
+        elif p.img:
+            continue
+        elif p.get_text().startswith("Fuente") and p.a:
+            if p.a.attrs.get("href"):
+                if p.a.attrs.get("href").startswith("https://www.facebook.com/"):
+                    fb = p.a.attrs.get("href")
+            try:
+                id_tuit_text_plain(p.a.attrs.get("href"), link_tuit)
+            except Exception:
+                print("FAIL GET TUIT INTO FUENTE")
+            continue
+        elif p.em:
+            continue
+        elif p.get_text().startswith("Fuente PAT") or p.get_text().startswith("Fuente: ABI"):
+            continue
+        elif p.get_text().startswith("Copyright") and p.a:
+            break
+        else:
+            contento.append(p.get_text())
+    
     print("flush")
     contento = [u.rrss(cnt) for cnt in contento]
     contento = "*#*".join(contento)
     contento = "{} *$* {}".format(title, contento)
-    return dict(content=contento, categorias=categorias, date=date, img=img_link, external=external_link, link=href(title), tuit=link_tuit, pined=pined)
+    return dict(content=contento, categorias=categorias, date=date, img=img_link, external=external_link, link=href(title), tuit=link_tuit, pined=pined,fb=fb)

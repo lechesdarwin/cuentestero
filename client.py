@@ -3,7 +3,12 @@
 import pickle
 import requests
 import concurrent.futures
+import sys
 
+outdata = sys.argv[2]
+inurl = sys.argv[1]
+print("Entrada",inurl)
+print("Salida",outdata)
 
 data = []
 URLS = []
@@ -13,10 +18,12 @@ URLS = []
 #        'http://www.bbc.co.uk/',
 #        'http://some-made-up-domain.com/']
 #
-with open("url.pkl","rb") as f:
-    URLS = pickle.load(f)
+with open(inurl,"rb") as f:
+    URLS = list(pickle.load(f))
+    
+
 h = {"Connection":"keep-alive"}
-URLS = URLS[:20]
+#URLS = URLS[20:]
 # Retrieve a single page and report the URL and contents
 def download(url:str):
     resp = requests.post("http://127.0.0.1:8888/",json={"url":url},headers=h)
@@ -45,7 +52,7 @@ with concurrent.futures.ThreadPoolExecutor(max_workers=4) as executor:
             print(f'{url} page is {True} bytes')
 
 print("Voy a escribir !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
-with open("data.pkl","wb") as f:
+with open(outdata,"wb") as f:
     pickle.dump(data,f)
 
 #
