@@ -82,4 +82,4 @@ async def down_e(url,pined=False):
     contento = [u.rrss(cnt) for cnt in contento]
     contento = "*#*".join(contento)
     contento = "{} *$* {}".format(title, contento)
-    return dict(content=contento, categorias=categorias, date=date, img=img_link, external=external_link, link=href(title), tuit=link_tuit, pined=pined,fb=fb)
+    return dict(content=contento, categorias=categorias, date=date, img=img_link, external=external_link, link=href(title), tuit=link_tuit, pined=pined,fb=fb,metadata={})
